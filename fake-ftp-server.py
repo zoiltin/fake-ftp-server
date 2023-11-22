@@ -1,11 +1,16 @@
 from socket import *
 from multiprocessing import Process
 import time
+import sys
 
-IP = "192.168.72.132"
-PORT = 1234
-ADDR_MAIN = (IP, PORT)
-ADDR_EXT = (IP,63568)
+def get_host_ip():
+    try:
+        s = socket(AF_INET,SOCK_DGRAM)
+        s.connect(('8.8.8.8',80))
+        ip = s.getsockname()[0]
+    finally:
+        s.close()
+    return ip
 
 def epsv(s_ext):
     s_ext.bind(ADDR_EXT)
@@ -24,6 +29,7 @@ def clear_null(res):
 def center(connect):
     res = []
     connect.send(b"220 (vsFTPd 3.0.3)\n")
+    print('[*]Waiting for data...')
     while True:
         msg = connect.recv(1024)
         data = ''
@@ -55,12 +61,24 @@ def center(connect):
             return '/'.join(clear_null(res))
 
 if __name__ == '__main__':
+    IP = get_host_ip()
+    PORT = int(sys.argv[1])
+    ADDR_MAIN = (IP, PORT)
+    ADDR_EXT = (IP,63568)
+    print('[*]Listening {IP} on {PORT} and 63568 ...')
+    output = sys.argv[2]
     s = socket()
     s.bind(ADDR_MAIN)
     s.listen()
     connect, addr = s.accept()
-    data = center(connect)
-    with open('res.txt','w+') as f:
+    print('[*]Get connection from {addr}.')
+    try:
+        data = center(connect)
+    except:
+        print('[-]Failed to get data.')
+    finally:
+        s.close()
+        print('asdasdads')
+    with open(output,'w+') as f:
         f.write(data)
-    s.close()
-    
+    print('[*]Data has been written into {output}.')
