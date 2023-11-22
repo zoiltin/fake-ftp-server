@@ -65,13 +65,13 @@ if __name__ == '__main__':
     PORT = int(sys.argv[1])
     ADDR_MAIN = (IP, PORT)
     ADDR_EXT = (IP,63568)
-    print('[*]Listening {IP} on {PORT} and 63568 ...')
+    print(f'[*]Listening {IP} on {PORT} and 63568 ...')
     output = sys.argv[2]
     s = socket()
     s.bind(ADDR_MAIN)
     s.listen()
     connect, addr = s.accept()
-    print('[*]Get connection from {addr}.')
+    print(f'[*]Get connection from {addr}.')
     try:
         data = center(connect)
     except:
@@ -81,4 +81,4 @@ if __name__ == '__main__':
         print('asdasdads')
     with open(output,'w+') as f:
         f.write(data)
-    print('[*]Data has been written into {output}.')
+    print(f'[*]Data has been written into {output}.')
