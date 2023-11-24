@@ -78,7 +78,6 @@ if __name__ == '__main__':
         print('[-]Failed to get data.')
     finally:
         s.close()
-        print('asdasdads')
     with open(output,'w+') as f:
         f.write(data)
     print(f'[*]Data has been written into {output}.')
