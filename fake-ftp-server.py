@@ -35,7 +35,13 @@ def center(connect):
         data = ''
         rep = b'\n'
         if 'USER ' == msg.decode()[:5]:
+            data = msg.decode()+'\r\n'
+            rep = b'331 Please specify the password.\n'
+        elif 'PASS ' == msg.decode()[:5]:
             rep = b'230 Login successful.\n'
+            version = msg.decode()[5:].replace('@','')
+            data = msg.decode()+'\r\n\r\n\r\n'
+            print(f'[*] The version is {version}')
         elif 'TYPE I' == msg.decode()[:6]:
             rep = b'200 Switching to Binary mode.\n'
         elif 'TYPE A' == msg.decode()[:6]:
